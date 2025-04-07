@@ -1,14 +1,14 @@
 import { Stack } from "expo-router";
 
 import { ThemeProvider } from "@react-navigation/native";
-import { SafeAreaView, useColorScheme, View } from "react-native";
-import { MD3DarkTheme, MD3LightTheme, PaperProvider, Text } from "react-native-paper";
+import { SafeAreaView, useColorScheme } from "react-native";
+import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 
 import merge from "deepmerge";
 import { AppProvider } from "./context/context";
 import Colors from "../constants/Colors.js";
-import GroceriesScreen from "./components/Groceries-Screen";
+import GroceriesScreen from "./components/screens/Groceries-Screen.jsx";
 
 const CombinedLightTheme = merge(MD3LightTheme, { colors: Colors.light });
 const CombinedDarkTheme = merge(MD3DarkTheme, { colors: Colors.dark });
