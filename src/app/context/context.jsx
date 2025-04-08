@@ -4,6 +4,7 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [groceries, setGroceries] = useState([]);
+  const [addItemInput, setAddItemInput] = useState("");
   const [searchDialogVisible, SetSearchDialogVisible] = useState(false);
   const [addItemDialogVisible, SetAddItemDialogVisible] = useState(false);
 
@@ -12,6 +13,8 @@ export const AppProvider = ({ children }) => {
       value={{
         groceries,
         setGroceries,
+        addItemInput,
+        setAddItemInput,
         searchDialogVisible,
         SetSearchDialogVisible,
         addItemDialogVisible,

@@ -1,6 +1,7 @@
 import * as NavigationBar from "expo-navigation-bar";
 import { ThemeProvider } from "@react-navigation/native";
-import { SafeAreaView, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 
@@ -37,8 +38,6 @@ export default function RootLayout() {
           <SafeAreaView
             style={{
               flex: 1,
-              justifyContent: "center",
-              position: "relative",
               backgroundColor: theme.colors.background,
             }}
           >

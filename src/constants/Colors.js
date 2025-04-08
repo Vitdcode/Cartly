@@ -13,7 +13,7 @@ const Colors = {
     onPrimaryContainer: "rgb(0, 32, 27)",
     secondary: "rgb(149, 195, 166)",
     onSecondary: "rgb(255, 255, 255)",
-    secondaryContainer: "rgb(209, 224, 220)",
+    secondaryContainer: "rgb(224, 209, 209)",
     onSecondaryContainer: "rgb(6, 32, 27)",
     tertiary: "rgb(68, 97, 121)",
     onTertiary: "rgb(255, 255, 255)",
