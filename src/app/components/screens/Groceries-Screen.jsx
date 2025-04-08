@@ -8,7 +8,7 @@ const GroceriesScreen = () => {
   return (
     <View style={{ flex: 1, gap: 16 }}>
       <Fab iconName={"plus"} />
-      <Fab iconName={"text-search"} bottomValue={100} />
+      <Fab iconName={"text-search"} bottomValue={120} />
     </View>
   );
 };

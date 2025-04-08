@@ -1,8 +1,10 @@
 import { Tabs } from "expo-router";
+
 /* icons */
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useTheme } from "react-native-paper";
+import { useEffect } from "react";
 
 export default function TabLayout() {
   const theme = useTheme();

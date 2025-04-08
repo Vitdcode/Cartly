@@ -7,13 +7,19 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   const hideDialog = () => setVisible(false);
 
   return (
-    <View>
+    <View style={{ position: "relative" }}>
       <Portal>
         <Dialog
           visible={visible}
           onDismiss={hideDialog}
           onShow={() => inputRef.current?.focus()}
-          style={{ position: "absolute", bottom: 30, left: 50, width: "70%" }}
+          style={{
+            position: "absolute",
+            top: 200,
+            left: 50,
+            width: "80%",
+            marginHorizontal: "auto",
+          }}
         >
           <Dialog.Title>{label}</Dialog.Title>
           <Dialog.Content>

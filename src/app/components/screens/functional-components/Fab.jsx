@@ -3,7 +3,7 @@ import { FAB, useTheme } from "react-native-paper";
 import DialogWindow from "./Dialog";
 import { useAppContext } from "../../../context/context";
 
-const Fab = ({ iconName, bottomValue = 20 }) => {
+const Fab = ({ iconName, bottomValue = 40 }) => {
   const {
     searchDialogVisible,
     SetSearchDialogVisible,
@@ -18,7 +18,9 @@ const Fab = ({ iconName, bottomValue = 20 }) => {
       margin: 16,
       right: 0,
       bottom: bottomValue,
-      backgroundColor: theme.colors.secondary,
+      backgroundColor: theme.colors.yellow,
+      borderWidth: 1,
+      borderColor: "white",
     },
   });
 
@@ -30,7 +32,7 @@ const Fab = ({ iconName, bottomValue = 20 }) => {
 
   return (
     <>
-      <FAB icon={iconName} style={styles.fab} onPress={handlePress} color="white" />
+      <FAB icon={iconName} style={styles.fab} onPress={handlePress} color="black" />
       {iconName === "plus" ? (
         <DialogWindow
           visible={addItemDialogVisible}
