@@ -11,7 +11,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   const hideDialog = () => setVisible(false);
 
   const handleSubmit = () => {
-    setGroceries([...groceries, addItemInput]);
+    setGroceries([...groceries, { name: addItemInput, quantity: 1 }]);
   };
 
   return (
@@ -35,7 +35,6 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               mode="outlined"
               label={label}
               defaultValue={addItemInput} //workaround, instead of value to eliminate cursor flickering
-              /*    value={addItemInput} */
               autoFocus
               onChangeText={setAddItemInput}
               onSubmitEditing={handleSubmit}
