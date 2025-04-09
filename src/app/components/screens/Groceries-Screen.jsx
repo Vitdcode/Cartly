@@ -1,7 +1,7 @@
-import { Text, Divider, useTheme, Button, Icon } from "react-native-paper";
+import { Text, Divider, useTheme, Button, Icon, IconButton } from "react-native-paper";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Fab from "./functional-components/Fab";
 import { useAppContext } from "../../context/context";
 
@@ -59,6 +59,10 @@ const GroceriesScreen = () => {
     );
   };
 
+  const deleteItem = (item) => {
+    setGroceries(groceries.filter((i) => i.name != item.name));
+  };
+
   const metricDate = () => {
     const today = new Date();
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -92,7 +96,12 @@ const GroceriesScreen = () => {
                     </Text>
                     <Button onPress={() => handleQuantityDecrease(item)}>-</Button>
                   </View>
-                  <Icon source="delete-outline" color={theme.colors.gray} size={30} />
+                  <IconButton
+                    icon="delete-outline"
+                    iconColor={theme.colors.gray}
+                    size={30}
+                    onPress={() => deleteItem(item)}
+                  />
                 </View>
               </View>
               <Divider horizontalInset={true} />
