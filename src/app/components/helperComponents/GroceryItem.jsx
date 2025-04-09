@@ -96,7 +96,7 @@ const GroceryItem = ({ item, index, theme, screenName }) => {
               icon="delete-outline"
               iconColor={theme.colors.gray}
               size={30}
-              onPress={() => moveItem(item)}
+              onPress={() => deleteItem(item)}
             />
 
             <View style={styles.itemDetails}>
