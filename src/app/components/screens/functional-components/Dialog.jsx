@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
 import { useEffect, useRef } from "react";
 import { useAppContext } from "../../../context/context";
@@ -14,6 +14,16 @@ const DialogWindow = ({ visible, setVisible, label }) => {
     setGroceries([...groceries, { name: addItemInput, quantity: 1 }]);
   };
 
+  const styles = StyleSheet.create({
+    dialogBtn: {
+      color: "black",
+      borderRadius: 10,
+      padding: 2,
+      borderWidth: 1,
+      borderColor: "white",
+    },
+  });
+
   return (
     <View style={{ position: "relative" }}>
       <Portal>
@@ -23,16 +33,17 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           onShow={() => inputRef.current?.focus()}
           style={{
             position: "absolute",
-            top: 200,
+            top: 180,
             left: 50,
             width: "80%",
             marginHorizontal: "auto",
+            backgroundColor: theme.colors.dialog,
           }}
         >
           <Dialog.Title>{label}</Dialog.Title>
           <Dialog.Content>
             <TextInput
-              mode="outlined"
+              mode="flat"
               label={label}
               defaultValue={addItemInput} //workaround, instead of value to eliminate cursor flickering
               autoFocus
@@ -46,8 +57,8 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             <Button
               mode="contained"
               buttonColor={theme.colors.yellow}
-              textColor={theme.colors.textColor}
-              style={{ borderRadius: 10, padding: 2 }}
+              textColor="black"
+              style={styles.dialogBtn}
               onPress={hideDialog}
             >
               Close
@@ -55,8 +66,8 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             <Button
               mode="contained"
               buttonColor={theme.colors.yellow}
-              textColor={theme.colors.textColor}
-              style={{ borderRadius: 10, padding: 2 }}
+              textColor="black"
+              style={styles.dialogBtn}
               onPress={handleSubmit}
             >
               + Add

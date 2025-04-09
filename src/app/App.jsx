@@ -45,7 +45,7 @@ export default function RootLayout() {
           </SafeAreaView>
           <StatusBar
             style={theme.dark ? "light" : "dark"} // Auto-detects from theme
-            backgroundColor={theme.colors.primary} // Uses theme's secondary color
+            backgroundColor={theme.colors.statusBar} // Uses theme's secondary color
           />
         </AppProvider>
       </ThemeProvider>
