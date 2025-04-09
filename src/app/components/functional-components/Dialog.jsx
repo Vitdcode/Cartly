@@ -5,13 +5,31 @@ import { useAppContext } from "../../context/context";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const theme = useTheme();
-  const { addItemInput, setAddItemInput, groceries, setGroceries } = useAppContext();
+  const {
+    addItemInput,
+    setAddItemInput,
+    groceries,
+    setGroceries,
+    completedGroceries,
+    setCompletedGroceries,
+  } = useAppContext();
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
   const handleSubmit = () => {
-    setGroceries([...groceries, { name: addItemInput, quantity: 1 }]);
+    setGroceries((prev) => {
+      const alreadyExists = prev?.some(
+        (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
+      );
+      const alreadyExistsCompleted = completedGroceries.some(
+        (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
+      );
+      if (alreadyExists || alreadyExistsCompleted) {
+        return prev;
+      }
+      return [...prev, { name: addItemInput, quantity: 1 }];
+    });
   };
 
   const styles = StyleSheet.create({

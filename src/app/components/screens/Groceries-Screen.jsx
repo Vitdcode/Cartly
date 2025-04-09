@@ -46,7 +46,7 @@ const GroceriesScreen = () => {
           </Text>
         </View>
         <View style={{ gap: 30, marginTop: 350 }}>
-          {groceries.map((item, index) => (
+          {groceries?.map((item, index) => (
             <GroceryItem
               item={item}
               index={index}

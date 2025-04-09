@@ -12,7 +12,7 @@ const CompletedGroceries = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ScrollView contentContainerStyle={{ paddingBottom: 90 }}>
         <View style={{ gap: 30, marginTop: 350 }}>
-          {completedGroceries.map((item, index) => (
+          {completedGroceries?.map((item, index) => (
             <GroceryItem
               item={item}
               index={index}
