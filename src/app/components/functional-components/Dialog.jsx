@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
 import { useEffect, useRef } from "react";
-import { useAppContext } from "../../../context/context";
+import { useAppContext } from "../../context/context";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const theme = useTheme();

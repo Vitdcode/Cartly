@@ -2,34 +2,31 @@ import { Text, Divider, useTheme, Button, Icon, IconButton } from "react-native-
 import { ScrollView, StyleSheet, View } from "react-native";
 
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import Fab from "./functional-components/Fab";
+import Fab from "../functional-components/Fab";
 import { useAppContext } from "../../context/context";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import GroceryItem from "../helperComponents/GroceryItem";
 
 const GroceriesScreen = () => {
   const theme = useTheme();
-  const { addItemInput, setAddItemInput, groceries, setGroceries } = useAppContext();
+  const {
+    addItemInput,
+    setAddItemInput,
+    groceries,
+    setGroceries,
+    completedGroceries,
+    setCompletedGroceries,
+  } = useAppContext();
+  const navigation = useNavigation();
+
+  const metricDate = () => {
+    const today = new Date();
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return today.toLocaleDateString("de-DE", options);
+  };
 
   const styles = StyleSheet.create({
-    itemStyle: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: 20,
-      alignItems: "center",
-      padding: 5,
-    },
-    itemDetails: {
-      /*    backgroundColor: theme.colors.yellow, */
-      borderWidth: 1,
-      borderColor: "white",
-      flexDirection: "row",
-      borderRadius: 11,
-      padding: 5,
-      alignItems: "center",
-    },
-    itemQuantityText: {
-      color: theme.colors.textColor,
-      padding: 4,
-    },
     date: {
       marginHorizontal: "auto",
       marginTop: 20,
@@ -38,80 +35,33 @@ const GroceriesScreen = () => {
       color: "black",
       borderRadius: 10,
     },
-    deleteIcon: {
-      padding: 5,
-      height: 50,
-    },
   });
 
-  const handleQuantityIncrease = (item) => {
-    console.log(item);
-    setGroceries((prev) =>
-      prev.map((i) => (i.name === item.name ? { ...i, quantity: i.quantity + 1 } : i))
-    );
-  };
-
-  const handleQuantityDecrease = (item) => {
-    setGroceries((prev) =>
-      prev.map((i) =>
-        i.name === item.name ? { ...i, quantity: i.quantity === 1 ? 1 : i.quantity - 1 } : i
-      )
-    );
-  };
-
-  const deleteItem = (item) => {
-    setGroceries(groceries.filter((i) => i.name != item.name));
-  };
-
-  const metricDate = () => {
-    const today = new Date();
-    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
-    return today.toLocaleDateString("de-DE", options);
-  };
-
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ScrollView contentContainerStyle={{ paddingBottom: 90 }}>
         <Text variant="titleMedium" style={styles.date}>
           {metricDate()}
         </Text>
         <View style={{ gap: 30, marginTop: 350 }}>
           {groceries.map((item, index) => (
-            <View key={index}>
-              <View style={styles.itemStyle}>
-                <Text variant="titleLarge" key={index}>
-                  {item.name}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 25,
-                  }}
-                >
-                  <View style={styles.itemDetails}>
-                    <Button onPress={() => handleQuantityIncrease(item)}>+</Button>
-                    <Text variant="titleLarge" style={styles.itemQuantityText}>
-                      {item.quantity}
-                    </Text>
-                    <Button onPress={() => handleQuantityDecrease(item)}>-</Button>
-                  </View>
-                  <IconButton
-                    icon="delete-outline"
-                    iconColor={theme.colors.gray}
-                    size={30}
-                    onPress={() => deleteItem(item)}
-                  />
-                </View>
-              </View>
-              <Divider horizontalInset={true} />
-            </View>
+            <GroceryItem
+              item={item}
+              index={index}
+              theme={theme}
+              screenName={"groceriesScreen"}
+              key={index}
+            />
           ))}
         </View>
       </ScrollView>
       <Fab iconName={"plus"} />
-      <Fab iconName={"text-search"} bottomValue={120} />
-    </View>
+      <Fab
+        iconName={"checkbox-marked-circle-outline"}
+        bottomValue={120}
+        onPress={() => navigation.navigate("Completed groceries")}
+      />
+    </SafeAreaView>
   );
 };
 
