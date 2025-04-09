@@ -70,10 +70,20 @@ const GroceryItem = ({ item, index, theme, screenName }) => {
     }
   };
 
+  const deleteItem = (item) => {
+    if (screenName === "groceriesScreen") {
+      setGroceries(groceries.filter((i) => i.name != item.name));
+    } else {
+      setCompletedGroceries(completedGroceries.filter((i) => i.name != item.name));
+    }
+  };
+
   return (
     <View>
       <View style={styles.itemStyle}>
-        <Text variant="titleLarge">{item.name}</Text>
+        <Text variant="titleLarge" style={{ maxWidth: "30%" }}>
+          {item.name}
+        </Text>
         <View
           style={{
             flexDirection: "row",
@@ -81,32 +91,37 @@ const GroceryItem = ({ item, index, theme, screenName }) => {
             gap: 25,
           }}
         >
-          <View style={styles.itemDetails}>
-            <Button onPress={() => handleQuantityIncrease(item)}>+</Button>
-            <Text variant="titleLarge" style={styles.itemQuantityText}>
-              {item.quantity}
-            </Text>
-            <Button onPress={() => handleQuantityDecrease(item)}>-</Button>
+          <View style={{ flexDirection: "row" }}>
+            <IconButton
+              icon="delete-outline"
+              iconColor={theme.colors.gray}
+              size={30}
+              onPress={() => moveItem(item)}
+            />
+
+            <View style={styles.itemDetails}>
+              <Button onPress={() => handleQuantityIncrease(item)}>+</Button>
+              <Text variant="titleLarge" style={styles.itemQuantityText}>
+                {item.quantity}
+              </Text>
+              <Button onPress={() => handleQuantityDecrease(item)}>-</Button>
+            </View>
+            <IconButton
+              icon={
+                screenName === "groceriesScreen"
+                  ? "checkbox-marked-circle-outline"
+                  : "arrow-left-bold-circle-outline"
+              }
+              iconColor={theme.colors.gray}
+              size={30}
+              onPress={() => moveItem(item)}
+            />
           </View>
-          <IconButton
-            icon={
-              screenName === "groceriesScreen"
-                ? "checkbox-marked-circle-outline"
-                : "arrow-left-bold-circle-outline"
-            }
-            iconColor={theme.colors.gray}
-            size={30}
-            onPress={() => moveItem(item)}
-          />
         </View>
       </View>
       <Divider horizontalInset={true} />
     </View>
   );
 };
-{
-  /* <MaterialCommunityIcons name="arrow-left-bold-circle-outline" size={24} color="black" />
-<MaterialCommunityIcons name="checkbox-marked-circle-outline" size={24} color="black" />
- */
-}
+
 export default GroceryItem;

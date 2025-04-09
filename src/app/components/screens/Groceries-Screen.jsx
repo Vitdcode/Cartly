@@ -29,7 +29,7 @@ const GroceriesScreen = () => {
   const styles = StyleSheet.create({
     date: {
       marginHorizontal: "auto",
-      marginTop: 20,
+      /*   marginTop: 10, */
       padding: 4,
       backgroundColor: theme.colors.yellow,
       color: "black",
@@ -39,10 +39,12 @@ const GroceriesScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 90 }}>
-        <Text variant="titleMedium" style={styles.date}>
-          {metricDate()}
-        </Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: 210 }} stickyHeaderIndices={[0]}>
+        <View style={{ paddingVertical: 10 }}>
+          <Text variant="titleMedium" style={styles.date}>
+            {metricDate()}
+          </Text>
+        </View>
         <View style={{ gap: 30, marginTop: 350 }}>
           {groceries.map((item, index) => (
             <GroceryItem
