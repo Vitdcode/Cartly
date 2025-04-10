@@ -69,6 +69,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               onSubmitEditing={handleSubmit}
               returnKeyType="send"
               submitBehavior="submit"
+              style={{ backgroundColor: theme.colors.lightYellow }}
             />
           </Dialog.Content>
           <Dialog.Actions style={{ gap: 30 }}>
