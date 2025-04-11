@@ -7,6 +7,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [itemAdded, setItemAdded] = useState(false);
+
   const theme = useTheme();
   const {
     addItemInput,
@@ -34,6 +36,10 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       }, 1000);
       return;
     }
+    setItemAdded(true);
+    setTimeout(() => {
+      setItemAdded(false);
+    }, 1000);
     setGroceries((prev) => [...prev, { name: addItemInput, quantity: 1 }]);
   };
 
@@ -114,6 +120,12 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             <View style={styles.duplicateText}>
               <Text>Item already exists</Text>
               <MaterialIcons name="error-outline" size={24} color={theme.colors.yellow} />
+            </View>
+          )}
+          {itemAdded && (
+            <View style={styles.duplicateText}>
+              <Text>Item added</Text>
+              <MaterialIcons name="check-circle-outline" size={24} color={theme.colors.yellow} />
             </View>
           )}
         </Dialog>
