@@ -1,23 +1,31 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Dialog, Portal, Text, TextInput, useTheme } from "react-native-paper";
-import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/context";
-import { saveGroceryList } from "../../storage/storage";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import { clearEntireStorage } from "../../storage/storage";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [itemAdded, setItemAdded] = useState(false);
 
+  const categories = [
+    "Obst|1",
+    "Fleisch|2",
+    "Diverse Lebensmittel|3",
+    "Milchprodukte|4",
+    "Drogerie|5",
+    "Tiefkühl|6",
+    "Getränke|7",
+    "Sonstiges|8",
+  ];
+
+  const [selectedCategory, setSelectedCategory] = useState(categories[categories.length - 1]);
+
   const theme = useTheme();
-  const {
-    addItemInput,
-    setAddItemInput,
-    groceries,
-    setGroceries,
-    completedGroceries,
-    setCompletedGroceries,
-  } = useAppContext();
+  const { addItemInput, setAddItemInput, groceries, setGroceries, completedGroceries } =
+    useAppContext();
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
@@ -37,10 +45,23 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       return;
     }
     setItemAdded(true);
+
     setTimeout(() => {
       setItemAdded(false);
     }, 1000);
-    setGroceries((prev) => [...prev, { name: addItemInput, quantity: 1 }]);
+
+    setGroceries((prev) => [
+      ...prev,
+      { name: addItemInput, quantity: 1, category: selectedCategory },
+    ]);
+  };
+
+  const handleDeleteStorage = () => {
+    const deleteStorage = async () => {
+      await clearEntireStorage();
+    };
+
+    deleteStorage();
   };
 
   const styles = StyleSheet.create({
@@ -75,7 +96,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           onShow={() => inputRef.current?.focus()}
           style={{
             position: "absolute",
-            top: 180,
+            top: 110,
             left: 50,
             width: "80%",
             marginHorizontal: "auto",
@@ -96,25 +117,58 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               style={{ backgroundColor: theme.colors.lightYellow }}
             />
           </Dialog.Content>
-          <Dialog.Actions style={{ gap: 30 }}>
-            <Button
-              mode="contained"
-              buttonColor={theme.colors.yellow}
-              textColor="black"
-              style={styles.dialogBtn}
-              onPress={hideDialog}
+          <Dialog.Actions style={{ gap: 30, flexDirection: "column" }}>
+            <View
+              style={{
+                color: theme.colors.textColor,
+                backgroundColor: theme.colors.lightYellow,
+                borderRadius: 10,
+                width: "90%",
+              }}
             >
-              Close
-            </Button>
-            <Button
-              mode="contained"
-              buttonColor={theme.colors.yellow}
-              textColor="black"
-              style={styles.dialogBtn}
-              onPress={handleSubmit}
-            >
-              + Add
-            </Button>
+              <Picker
+                selectedValue={selectedCategory}
+                onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+                mode="dropdown"
+                style={{
+                  color: theme.colors.textColor,
+                }}
+              >
+                {categories.map((category, index) => (
+                  <Picker.Item key={index} label={category.split("|")[0]} value={category} />
+                ))}
+              </Picker>
+            </View>
+
+            <View style={{ flexDirection: "row", gap: 20 /*  marginLeft: "auto" */ }}>
+              <Button
+                mode="contained"
+                buttonColor={theme.colors.yellow}
+                textColor="black"
+                style={styles.dialogBtn}
+                onPress={handleDeleteStorage}
+              >
+                Delete
+              </Button>
+              <Button
+                mode="contained"
+                buttonColor={theme.colors.yellow}
+                textColor="black"
+                style={styles.dialogBtn}
+                onPress={hideDialog}
+              >
+                Close
+              </Button>
+              <Button
+                mode="contained"
+                buttonColor={theme.colors.yellow}
+                textColor="black"
+                style={styles.dialogBtn}
+                onPress={handleSubmit}
+              >
+                + Add
+              </Button>
+            </View>
           </Dialog.Actions>
           {isDuplicate && (
             <View style={styles.duplicateText}>

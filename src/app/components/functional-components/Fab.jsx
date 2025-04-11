@@ -2,11 +2,8 @@ import { StyleSheet } from "react-native";
 import { FAB, useTheme } from "react-native-paper";
 import DialogWindow from "./Dialog";
 import { useAppContext } from "../../context/context";
-/* import { useNavigation } from "@react-navigation/native"; */
 
 const Fab = ({ iconName, bottomValue = 40, onPress }) => {
-  /*   const navigation = useNavigation(); */
-
   const {
     searchDialogVisible,
     SetSearchDialogVisible,

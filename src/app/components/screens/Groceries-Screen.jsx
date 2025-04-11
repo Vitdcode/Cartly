@@ -5,19 +5,13 @@ import { useAppContext } from "../../context/context";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GroceryItem from "../helperComponents/GroceryItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { loadCompletedGroceryList, loadGroceryList, saveGroceryList } from "../../storage/storage";
 
 const GroceriesScreen = () => {
   const theme = useTheme();
-  const {
-    addItemInput,
-    setAddItemInput,
-    groceries,
-    setGroceries,
-    completedGroceries,
-    setCompletedGroceries,
-  } = useAppContext();
+  const { groceries, setGroceries, setCompletedGroceries } = useAppContext();
+  const [itemsPerCategory, setItemsByCategory] = useState({});
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -48,6 +42,25 @@ const GroceriesScreen = () => {
     return today.toLocaleDateString("de-DE", options);
   };
 
+  useEffect(() => {
+    setItemsByCategory(
+      groceries.reduce((acc, item) => {
+        const categoryOrder = item?.category.split("|")[1];
+        const category = item?.category.split("|")[0];
+        if (!acc[categoryOrder]) {
+          acc[categoryOrder] = { category: category, items: [] };
+        }
+
+        acc[categoryOrder]["items"].push({
+          name: item.name,
+          quantity: item.quantity,
+          category: item.category,
+        });
+        return acc;
+      }, {})
+    );
+  }, [groceries]);
+
   const styles = StyleSheet.create({
     date: {
       marginHorizontal: "auto",
@@ -67,14 +80,34 @@ const GroceriesScreen = () => {
           </Text>
         </View>
         <View style={{ gap: 30, marginTop: 350 }}>
-          {groceries?.map((item, index) => (
-            <GroceryItem
-              item={item}
-              index={index}
-              theme={theme}
-              screenName={"groceriesScreen"}
-              key={index}
-            />
+          {Object.values(itemsPerCategory).map(({ category, items }) => (
+            <View key={category}>
+              <Text
+                variant="bodyLarge"
+                style={{
+                  backgroundColor: theme.colors.lightYellow,
+                  borderTopWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: "white",
+                  textAlign: "center",
+                  color: theme.colors.textColor,
+                  padding: 4,
+                  marginBottom: 10,
+                }}
+              >
+                {category}
+              </Text>
+              <View style={{ gap: 20 }}>
+                {items?.map((item, index) => (
+                  <GroceryItem
+                    item={item}
+                    theme={theme}
+                    screenName={"groceriesScreen"}
+                    key={index}
+                  />
+                ))}
+              </View>
+            </View>
           ))}
         </View>
       </ScrollView>

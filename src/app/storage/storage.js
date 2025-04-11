@@ -35,3 +35,14 @@ export const loadCompletedGroceryList = async () => {
     return [];
   }
 };
+
+export const clearEntireStorage = async () => {
+  try {
+    await AsyncStorage.clear();
+    ("Entire AsyncStorage cleared");
+    return true;
+  } catch (e) {
+    console.error("Failed to clear storage:", e);
+    return false;
+  }
+};
