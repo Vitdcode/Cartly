@@ -1,10 +1,12 @@
 import { StyleSheet, View } from "react-native";
-import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
-import { useEffect, useRef } from "react";
+import { Button, Dialog, Portal, Text, TextInput, useTheme } from "react-native-paper";
+import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/context";
 import { saveGroceryList } from "../../storage/storage";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
+  const [isDuplicate, setIsDuplicate] = useState(false);
   const theme = useTheme();
   const {
     addItemInput,
@@ -18,28 +20,21 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
-  /*   const saveGroceryList = async (list) => {
-    try {
-      await AsyncStorage.setItem("groceryList", JSON.stringify(list));
-    } catch (e) {
-      console.error("Failed to save list:", e);
-    }
-  }; */
-
   const handleSubmit = () => {
-    setGroceries((prev) => {
-      const alreadyExists = prev?.some(
-        (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
-      );
-      const alreadyExistsCompleted = completedGroceries.some(
-        (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
-      );
-      if (alreadyExists || alreadyExistsCompleted) {
-        return prev;
-      }
-      return [...prev, { name: addItemInput, quantity: 1 }];
-    });
-    /*     saveGroceryList(groceries); */
+    const alreadyExists = groceries?.some(
+      (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
+    );
+    const alreadyExistsCompleted = completedGroceries.some(
+      (item) => item.name.toLowerCase().trim() === addItemInput.toLowerCase().trim()
+    );
+    if (alreadyExists || alreadyExistsCompleted) {
+      setIsDuplicate(true);
+      setTimeout(() => {
+        setIsDuplicate(false);
+      }, 1000);
+      return;
+    }
+    setGroceries((prev) => [...prev, { name: addItemInput, quantity: 1 }]);
   };
 
   const styles = StyleSheet.create({
@@ -47,6 +42,19 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       color: "black",
       borderRadius: 10,
       padding: 2,
+      borderWidth: 1,
+      borderColor: "white",
+    },
+    duplicateText: {
+      position: "absolute",
+      top: 10,
+      right: 10,
+      flexDirection: "row",
+      gap: "10",
+      backgroundColor: theme.colors.lightYellow,
+      padding: 5,
+      borderRadius: 10,
+      alignItems: "center",
       borderWidth: 1,
       borderColor: "white",
     },
@@ -102,6 +110,12 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               + Add
             </Button>
           </Dialog.Actions>
+          {isDuplicate && (
+            <View style={styles.duplicateText}>
+              <Text>Item already exists</Text>
+              <MaterialIcons name="error-outline" size={24} color={theme.colors.yellow} />
+            </View>
+          )}
         </Dialog>
       </Portal>
     </View>

@@ -4,6 +4,7 @@ import { StyleSheet, useColorScheme } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
+import * as SystemUI from "expo-system-ui";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -49,6 +50,8 @@ export default function RootLayout() {
       },
     },
   });
+
+  SystemUI.setBackgroundColorAsync(theme.colors.background);
 
   return (
     <PaperProvider theme={theme}>
