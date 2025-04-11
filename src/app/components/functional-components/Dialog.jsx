@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
 import { useEffect, useRef } from "react";
 import { useAppContext } from "../../context/context";
+import { saveGroceryList } from "../../storage/storage";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const theme = useTheme();
@@ -17,6 +18,14 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
+  /*   const saveGroceryList = async (list) => {
+    try {
+      await AsyncStorage.setItem("groceryList", JSON.stringify(list));
+    } catch (e) {
+      console.error("Failed to save list:", e);
+    }
+  }; */
+
   const handleSubmit = () => {
     setGroceries((prev) => {
       const alreadyExists = prev?.some(
@@ -30,6 +39,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       }
       return [...prev, { name: addItemInput, quantity: 1 }];
     });
+    /*     saveGroceryList(groceries); */
   };
 
   const styles = StyleSheet.create({

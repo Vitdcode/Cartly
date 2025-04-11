@@ -1,12 +1,12 @@
-import { Text, Divider, useTheme, Button, Icon, IconButton } from "react-native-paper";
+import { Text, useTheme, Button, Icon, IconButton } from "react-native-paper";
 import { ScrollView, StyleSheet, View } from "react-native";
-
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Fab from "../functional-components/Fab";
 import { useAppContext } from "../../context/context";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GroceryItem from "../helperComponents/GroceryItem";
+import { useEffect } from "react";
+import { loadCompletedGroceryList, loadGroceryList, saveGroceryList } from "../../storage/storage";
 
 const GroceriesScreen = () => {
   const theme = useTheme();
@@ -20,6 +20,28 @@ const GroceriesScreen = () => {
   } = useAppContext();
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const loadGroceries = async () => {
+      const list = await loadGroceryList();
+      if (list) setGroceries(list);
+    };
+
+    const loadCompletedGroceries = async () => {
+      const list = await loadCompletedGroceryList();
+      if (list) setCompletedGroceries(list);
+    };
+
+    loadGroceries();
+    loadCompletedGroceries();
+  }, []);
+
+  useEffect(() => {
+    const saveGroceries = async () => {
+      await saveGroceryList(groceries);
+    };
+    saveGroceries();
+  }, [groceries]);
+
   const metricDate = () => {
     const today = new Date();
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -29,7 +51,6 @@ const GroceriesScreen = () => {
   const styles = StyleSheet.create({
     date: {
       marginHorizontal: "auto",
-      /*   marginTop: 10, */
       padding: 4,
       backgroundColor: theme.colors.yellow,
       color: "black",

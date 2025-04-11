@@ -1,9 +1,18 @@
 import { StyleSheet, View } from "react-native";
 import { Divider, IconButton, Text, Button } from "react-native-paper";
 import { useAppContext } from "../../context/context";
+import { loadCompletedGroceryList, saveCompletedGroceryList } from "../../storage/storage";
+import { useEffect } from "react";
 
 const GroceryItem = ({ item, index, theme, screenName }) => {
   const { groceries, setGroceries, completedGroceries, setCompletedGroceries } = useAppContext();
+
+  useEffect(() => {
+    const saveCompletedGroceries = async () => {
+      await saveCompletedGroceryList(completedGroceries);
+    };
+    saveCompletedGroceries();
+  }, [completedGroceries]);
 
   const styles = StyleSheet.create({
     itemStyle: {
