@@ -93,7 +93,11 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
   return (
     <View>
       <View style={styles.itemStyle}>
-        <Text variant="titleLarge" style={{ maxWidth: "30%" }}>
+        <Text
+          variant="titleLarge"
+          style={{ maxWidth: "30%" }}
+          android_hyphenationFrequency="normal"
+        >
           {item.name}
         </Text>
         <View

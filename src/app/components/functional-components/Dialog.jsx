@@ -1,34 +1,33 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Button, Dialog, Portal, Text, TextInput, useTheme } from "react-native-paper";
-import { useAppContext } from "../../context/context";
 import { Picker } from "@react-native-picker/picker";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Modal, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
+import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
+import AddItemAnim from "../../animations/AddItemAnim";
+import { useAppContext } from "../../context/context";
 import { clearEntireStorage } from "../../storage/storage";
 
 const DialogWindow = ({ visible, setVisible, label }) => {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [itemAdded, setItemAdded] = useState(false);
+  const { addItemInput, setAddItemInput, groceries, setGroceries, completedGroceries } =
+    useAppContext();
+  const inputRef = useRef(null);
+  const theme = useTheme();
 
   const categories = [
     "Obst|1",
     "Fleisch|2",
     "Diverse Lebensmittel|3",
     "Milchprodukte|4",
-    "Drogerie|5",
-    "Tiefkühl|6",
-    "Getränke|7",
-    "Sonstiges|8",
+    "Haushalt|5",
+    "Drogerie|6",
+    "Tiefkühl|7",
+    "Getränke|8",
+    "Sonstiges|9",
   ];
 
   const [selectedCategory, setSelectedCategory] = useState(categories[categories.length - 1]);
-
-  const theme = useTheme();
-  const { addItemInput, setAddItemInput, groceries, setGroceries, completedGroceries } =
-    useAppContext();
-
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => setVisible(false);
 
   const handleSubmit = () => {
     const alreadyExists = groceries?.some(
@@ -42,6 +41,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       setTimeout(() => {
         setIsDuplicate(false);
       }, 1000);
+      setAddItemInput("");
       return;
     }
     setItemAdded(true);
@@ -54,14 +54,13 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       ...prev,
       { name: addItemInput, quantity: 1, category: selectedCategory },
     ]);
+    setAddItemInput("");
   };
 
-  const handleDeleteStorage = () => {
-    const deleteStorage = async () => {
-      await clearEntireStorage();
-    };
-
-    deleteStorage();
+  const showKeyboard = () => {
+    setTimeout(() => {
+      inputRef.current.focus();
+    }, 50);
   };
 
   const styles = StyleSheet.create({
@@ -71,6 +70,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       padding: 2,
       borderWidth: 1,
       borderColor: "white",
+      width: 100,
     },
     duplicateText: {
       position: "absolute",
@@ -88,103 +88,103 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   });
 
   return (
-    <View style={{ position: "relative" }}>
-      <Portal>
-        <Dialog
-          visible={visible}
-          onDismiss={hideDialog}
-          onShow={() => inputRef.current?.focus()}
+    <Modal animationType="fade" visible={visible} transparent={true} onShow={showKeyboard}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(43, 43, 43, 0.5)",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          paddingBottom: 30,
+        }}
+      >
+        <View
           style={{
-            position: "absolute",
-            top: 110,
-            left: 50,
-            width: "80%",
-            marginHorizontal: "auto",
+            height: 300,
+            width: "90%",
+            padding: 10,
+            borderRadius: 10,
+            gap: 20,
             backgroundColor: theme.colors.dialog,
+            justifyContent: "flex-end",
           }}
         >
-          <Dialog.Title>{label}</Dialog.Title>
-          <Dialog.Content>
-            <TextInput
-              mode="flat"
-              label={label}
-              defaultValue={addItemInput} //workaround, instead of value to eliminate cursor flickering
-              autoFocus
-              onChangeText={setAddItemInput}
-              onSubmitEditing={handleSubmit}
-              returnKeyType="send"
-              submitBehavior="submit"
-              style={{ backgroundColor: theme.colors.lightYellow }}
-            />
-          </Dialog.Content>
-          <Dialog.Actions style={{ gap: 30, flexDirection: "column" }}>
-            <View
+          <TextInput
+            mode="flat"
+            label={label}
+            value={addItemInput}
+            ref={inputRef}
+            onChangeText={setAddItemInput}
+            onSubmitEditing={handleSubmit}
+            returnKeyType="send"
+            submitBehavior="submit"
+            style={{
+              backgroundColor: theme.colors.lightYellow,
+            }}
+          />
+
+          <View
+            style={{
+              color: theme.colors.textColor,
+              backgroundColor: theme.colors.lightYellow,
+              borderRadius: 10,
+              width: "90%",
+              marginHorizontal: "auto",
+            }}
+          >
+            <Picker
+              selectedValue={selectedCategory}
+              onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+              mode="dropdown"
               style={{
                 color: theme.colors.textColor,
-                backgroundColor: theme.colors.lightYellow,
-                borderRadius: 10,
-                width: "90%",
               }}
             >
-              <Picker
-                selectedValue={selectedCategory}
-                onValueChange={(itemValue) => setSelectedCategory(itemValue)}
-                mode="dropdown"
-                style={{
-                  color: theme.colors.textColor,
-                }}
-              >
-                {categories.map((category, index) => (
-                  <Picker.Item key={index} label={category.split("|")[0]} value={category} />
-                ))}
-              </Picker>
-            </View>
+              {categories.map((category, index) => (
+                <Picker.Item key={index} label={category.split("|")[0]} value={category} />
+              ))}
+            </Picker>
+          </View>
 
-            <View style={{ flexDirection: "row", gap: 20 /*  marginLeft: "auto" */ }}>
-              <Button
-                mode="contained"
-                buttonColor={theme.colors.yellow}
-                textColor="black"
-                style={styles.dialogBtn}
-                onPress={handleDeleteStorage}
-              >
-                Delete
-              </Button>
-              <Button
-                mode="contained"
-                buttonColor={theme.colors.yellow}
-                textColor="black"
-                style={styles.dialogBtn}
-                onPress={hideDialog}
-              >
-                Close
-              </Button>
-              <Button
-                mode="contained"
-                buttonColor={theme.colors.yellow}
-                textColor="black"
-                style={styles.dialogBtn}
-                onPress={handleSubmit}
-              >
-                + Add
-              </Button>
-            </View>
-          </Dialog.Actions>
-          {isDuplicate && (
-            <View style={styles.duplicateText}>
-              <Text>Item already exists</Text>
-              <MaterialIcons name="error-outline" size={24} color={theme.colors.yellow} />
-            </View>
-          )}
-          {itemAdded && (
-            <View style={styles.duplicateText}>
-              <Text>Item added</Text>
+          <View
+            style={{ flexDirection: "row", gap: 30, marginHorizontal: "auto", marginBottom: 20 }}
+          >
+            <Button
+              mode="contained"
+              buttonColor={theme.colors.yellow}
+              textColor="black"
+              style={styles.dialogBtn}
+              onPress={() => setVisible(!visible)}
+            >
+              Close
+            </Button>
+            <Button
+              mode="contained"
+              buttonColor={theme.colors.yellow}
+              textColor="black"
+              style={styles.dialogBtn}
+              onPress={handleSubmit}
+            >
+              + Add
+            </Button>
+          </View>
+
+          <AddItemAnim
+            item={isDuplicate}
+            text={"Item already exists"}
+            icon={<MaterialIcons name="error-outline" size={24} color={theme.colors.yellow} />}
+          />
+
+          <AddItemAnim
+            item={itemAdded}
+            text={"Item Added"}
+            icon={
               <MaterialIcons name="check-circle-outline" size={24} color={theme.colors.yellow} />
-            </View>
-          )}
-        </Dialog>
-      </Portal>
-    </View>
+            }
+          />
+        </View>
+      </View>
+    </Modal>
   );
 };
 
