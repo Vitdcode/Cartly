@@ -41,7 +41,7 @@ export default function RootLayout() {
   const styles = StyleSheet.create({
     header: {
       headerStyle: {
-        backgroundColor: theme.colors.statusBar, // Background color
+        backgroundColor: theme.colors.lightYellow, // Background color
       },
       headerTintColor: theme.colors.textColor, // Text/icon color
       headerTitleStyle: {
@@ -78,7 +78,7 @@ export default function RootLayout() {
 
             <StatusBar
               style={theme.dark ? "light" : "dark"} // Auto-detects from theme
-              backgroundColor={theme.colors.statusBar} // Uses theme's secondary color
+              backgroundColor={theme.colors.lightYellow} // Uses theme's secondary color
             />
           </AppProvider>
         </NavigationContainer>

@@ -74,9 +74,19 @@ const GroceriesScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ScrollView contentContainerStyle={{ paddingBottom: 210 }} stickyHeaderIndices={[0]}>
-        <View style={{ paddingVertical: 10 }}>
-          <Text variant="titleMedium" style={styles.date}>
+        <View
+          style={{
+            paddingVertical: 10,
+            backgroundColor: theme.colors.lightYellow,
+            borderBottomWidth: 1,
+            borderColor: "white",
+          }}
+        >
+          <Text variant="titleMedium" style={{ marginHorizontal: "auto" }}>
             {metricDate()}
+          </Text>
+          <Text variant="titleMedium" style={{ marginHorizontal: "auto", marginTop: 10 }}>
+            Einkaufsliste
           </Text>
         </View>
         <View style={{ gap: 30, marginTop: 350 }}>

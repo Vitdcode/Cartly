@@ -112,11 +112,20 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
             />
 
             <View style={styles.itemDetails}>
-              <Button onPress={() => handleQuantityIncrease(item)}>+</Button>
+              <Button onPress={() => handleQuantityIncrease(item)} labelStyle={{ fontSize: 20 }}>
+                +
+              </Button>
               <Text variant="titleLarge" style={styles.itemQuantityText}>
                 {item.quantity}
               </Text>
-              <Button onPress={() => handleQuantityDecrease(item)}>-</Button>
+              <Button
+                onPress={() => handleQuantityDecrease(item)}
+                labelStyle={{
+                  fontSize: 20,
+                }}
+              >
+                -
+              </Button>
             </View>
             <IconButton
               icon={
