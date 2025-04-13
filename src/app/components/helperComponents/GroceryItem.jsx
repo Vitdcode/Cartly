@@ -26,13 +26,15 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
       borderWidth: 1,
       borderColor: "white",
       flexDirection: "row",
-      borderRadius: 11,
+      borderRadius: 15,
       padding: 5,
       alignItems: "center",
+      backgroundColor: theme.colors.lightYellow,
     },
     itemQuantityText: {
       color: theme.colors.textColor,
       padding: 4,
+      marginHorizontal: 7,
     },
 
     deleteIcon: {
@@ -94,7 +96,7 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
     <View>
       <View style={styles.itemStyle}>
         <Text
-          variant="titleLarge"
+          variant="titleMedium"
           style={{ maxWidth: "30%" }}
           android_hyphenationFrequency="normal"
         >
@@ -111,25 +113,26 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
             <IconButton
               icon="delete-outline"
               iconColor={theme.colors.gray}
-              size={30}
+              size={28}
               onPress={() => deleteItem(item)}
             />
 
             <View style={styles.itemDetails}>
-              <Button onPress={() => handleQuantityIncrease(item)} labelStyle={{ fontSize: 20 }}>
-                +
-              </Button>
+              <IconButton
+                icon="minus-thick"
+                iconColor={theme.colors.gray}
+                onPress={() => handleQuantityDecrease(item)}
+                size={20}
+              />
               <Text variant="titleLarge" style={styles.itemQuantityText}>
                 {item.quantity}
               </Text>
-              <Button
-                onPress={() => handleQuantityDecrease(item)}
-                labelStyle={{
-                  fontSize: 20,
-                }}
-              >
-                -
-              </Button>
+              <IconButton
+                iconColor={theme.colors.gray}
+                icon="plus-thick"
+                onPress={() => handleQuantityIncrease(item)}
+                size={20}
+              />
             </View>
             <IconButton
               icon={
@@ -138,7 +141,7 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
                   : "arrow-left-bold-circle-outline"
               }
               iconColor={theme.colors.gray}
-              size={30}
+              size={28}
               onPress={() => moveItem(item)}
             />
           </View>

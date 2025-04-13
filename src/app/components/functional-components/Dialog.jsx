@@ -88,7 +88,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
   });
 
   return (
-    <Modal animationType="fade" visible={visible} transparent={true} onShow={showKeyboard}>
+    <Modal animationType="slide" visible={visible} transparent={true} onShow={showKeyboard}>
       <View
         style={{
           flex: 1,
@@ -103,7 +103,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             height: 300,
             width: "90%",
             padding: 10,
-            borderRadius: 10,
+            borderRadius: 20,
             gap: 20,
             backgroundColor: theme.colors.dialog,
             justifyContent: "flex-end",
@@ -118,8 +118,13 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             onSubmitEditing={handleSubmit}
             returnKeyType="send"
             submitBehavior="submit"
+            cursorColor={theme.colors.secondary}
+            underlineColor={theme.colors.secondary}
+            activeUnderlineColor={theme.colors.secondary}
             style={{
               backgroundColor: theme.colors.lightYellow,
+              width: "90%",
+              marginHorizontal: "auto",
             }}
           />
 
@@ -128,7 +133,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               color: theme.colors.textColor,
               backgroundColor: theme.colors.lightYellow,
               borderRadius: 10,
-              width: "90%",
+              width: "85%",
               marginHorizontal: "auto",
             }}
           >

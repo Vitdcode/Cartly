@@ -1,5 +1,5 @@
 import { Text, useTheme, Button, Icon, IconButton } from "react-native-paper";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
 import Fab from "../functional-components/Fab";
 import { useAppContext } from "../../context/context";
 import { useNavigation } from "@react-navigation/native";
