@@ -4,7 +4,7 @@ import { useAppContext } from "../../context/context";
 import { loadCompletedGroceryList, saveCompletedGroceryList } from "../../storage/storage";
 import { useEffect } from "react";
 
-const GroceryItem = ({ item, theme, screenName, categoryName }) => {
+const GroceryItem = ({ item, theme, screenName, items, index }) => {
   const { groceries, setGroceries, completedGroceries, setCompletedGroceries } = useAppContext();
 
   useEffect(() => {
@@ -92,6 +92,16 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
     }
   };
 
+  const checkNextItem = () => {
+    if (!items[index + 1]) return;
+
+    if (item.category === items[index + 1].category) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <View>
       <View style={styles.itemStyle}>
@@ -147,7 +157,7 @@ const GroceryItem = ({ item, theme, screenName, categoryName }) => {
           </View>
         </View>
       </View>
-      <Divider horizontalInset={true} style={{ marginTop: 10 }} />
+      {checkNextItem() && <Divider horizontalInset={true} style={{ marginTop: 10 }} />}
     </View>
   );
 };

@@ -113,6 +113,8 @@ const GroceriesScreen = () => {
                     item={item}
                     theme={theme}
                     screenName={"groceriesScreen"}
+                    items={items}
+                    index={index}
                     key={index}
                   />
                 ))}
