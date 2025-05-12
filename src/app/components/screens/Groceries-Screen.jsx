@@ -89,7 +89,7 @@ const GroceriesScreen = () => {
             Einkaufsliste
           </Text>
         </View>
-        <View style={{ gap: 30, marginTop: 350 }}>
+        <View style={{ gap: 15, marginTop: 350 }}>
           {Object.values(itemsPerCategory).map(({ category, items }) => (
             <View key={category}>
               <Text

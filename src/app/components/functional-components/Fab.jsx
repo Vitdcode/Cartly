@@ -9,6 +9,8 @@ const Fab = ({ iconName, bottomValue = 40, onPress }) => {
     SetSearchDialogVisible,
     addItemDialogVisible,
     SetAddItemDialogVisible,
+    setSearchResults,
+    setAddItemInput,
   } = useAppContext();
 
   const theme = useTheme();
@@ -25,9 +27,13 @@ const Fab = ({ iconName, bottomValue = 40, onPress }) => {
   });
 
   const handlePress = () => {
-    iconName === "plus"
-      ? SetAddItemDialogVisible(!addItemDialogVisible)
-      : SetSearchDialogVisible(!searchDialogVisible);
+    if (iconName === "plus") {
+      SetAddItemDialogVisible(!addItemDialogVisible);
+      setSearchResults([]);
+      setAddItemInput("");
+    } else {
+      SetSearchDialogVisible(!searchDialogVisible);
+    }
   };
 
   return (

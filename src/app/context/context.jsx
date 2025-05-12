@@ -8,6 +8,8 @@ export const AppProvider = ({ children }) => {
   const [addItemInput, setAddItemInput] = useState("");
   const [searchDialogVisible, SetSearchDialogVisible] = useState(false);
   const [addItemDialogVisible, SetAddItemDialogVisible] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchResultsNotCompleted, setSearchResultsNotCompleted] = useState([]);
 
   return (
     <AppContext.Provider
@@ -22,6 +24,10 @@ export const AppProvider = ({ children }) => {
         SetSearchDialogVisible,
         addItemDialogVisible,
         SetAddItemDialogVisible,
+        searchResults,
+        setSearchResults,
+        searchResultsNotCompleted,
+        setSearchResultsNotCompleted,
       }}
     >
       {children}

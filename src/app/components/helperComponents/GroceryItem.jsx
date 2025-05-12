@@ -6,14 +6,12 @@ import { useEffect } from "react";
 
 const GroceryItem = ({ item, theme, screenName, items, index }) => {
   const { groceries, setGroceries, completedGroceries, setCompletedGroceries } = useAppContext();
-
   useEffect(() => {
     const saveCompletedGroceries = async () => {
       await saveCompletedGroceryList(completedGroceries);
     };
     saveCompletedGroceries();
   }, [completedGroceries]);
-
   const styles = StyleSheet.create({
     itemStyle: {
       flexDirection: "row",

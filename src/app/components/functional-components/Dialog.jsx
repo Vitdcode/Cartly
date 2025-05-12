@@ -1,8 +1,15 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useRef, useState } from "react";
-import { Animated, Modal, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
-import { Button, Dialog, Portal, TextInput, useTheme } from "react-native-paper";
+import {
+  Animated,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { Button, Dialog, Portal, Text, TextInput, useTheme } from "react-native-paper";
 import AddItemAnim from "../../animations/AddItemAnim";
 import { useAppContext } from "../../context/context";
 import { clearEntireStorage } from "../../storage/storage";
@@ -10,8 +17,18 @@ import { clearEntireStorage } from "../../storage/storage";
 const DialogWindow = ({ visible, setVisible, label }) => {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [itemAdded, setItemAdded] = useState(false);
-  const { addItemInput, setAddItemInput, groceries, setGroceries, completedGroceries } =
-    useAppContext();
+  const {
+    addItemInput,
+    setAddItemInput,
+    groceries,
+    setGroceries,
+    completedGroceries,
+    setCompletedGroceries,
+    searchResults,
+    setSearchResults,
+    searchResultsNotCompleted,
+    setSearchResultsNotCompleted,
+  } = useAppContext();
   const inputRef = useRef(null);
   const theme = useTheme();
 
@@ -57,10 +74,79 @@ const DialogWindow = ({ visible, setVisible, label }) => {
     setAddItemInput("");
   };
 
+  const handleSubmitSearch = (itemFromSearch) => {
+    const alreadyExists = groceries?.some(
+      (item) => item.name.toLowerCase().trim() === itemFromSearch.name.toLowerCase().trim()
+    );
+
+    if (alreadyExists) {
+      setIsDuplicate(true);
+      setTimeout(() => {
+        setIsDuplicate(false);
+      }, 1000);
+      return;
+    }
+    setItemAdded(true);
+
+    setTimeout(() => {
+      setItemAdded(false);
+    }, 1000);
+
+    setGroceries((prev) => [
+      ...prev,
+      { name: itemFromSearch.name, quantity: 1, category: itemFromSearch.category },
+    ]);
+
+    setCompletedGroceries(completedGroceries.filter((item) => item.name != itemFromSearch.name));
+    setSearchResults(searchResults.filter((item) => item.name != itemFromSearch.name));
+  };
+
   const showKeyboard = () => {
     setTimeout(() => {
       inputRef.current.focus();
     }, 50);
+  };
+
+  const changeInputTextAndSearchGroceries = (text) => {
+    // Always update the input text state immediately
+    setAddItemInput(text);
+
+    // Function to handle search logic for both groceries and completedGroceries
+    const handleSearch = (items, setSearchResultsFn) => {
+      // If the input text is empty, clear the search results and exit
+      if (text.length === 0) {
+        setSearchResultsFn([]);
+        return;
+      }
+
+      const lowerCaseText = text.toLowerCase(); // Optimize by converting text to lowercase once
+
+      // Use a Set to keep track of names that have already been added to our search results
+      // This efficiently prevents duplicates by name.
+      const seenNames = new Set();
+
+      // Filter the items array to find all matches
+      const filteredResults = items.filter((item) => {
+        const lowerCaseItemName = item.name.toLowerCase();
+
+        // Check if the item name includes the search text AND if this specific item name
+        // has not already been added to our filtered results.
+        if (lowerCaseItemName.includes(lowerCaseText) && !seenNames.has(lowerCaseItemName)) {
+          seenNames.add(lowerCaseItemName); // Add the name to the Set to mark it as seen
+          return true; // Include this item in the results
+        }
+        return false; // Exclude this item
+      });
+
+      // Update the searchResults state once with the new, de-duplicated list of matches
+      setSearchResultsFn(filteredResults);
+    };
+
+    // Perform search on completedGroceries
+    handleSearch(completedGroceries, setSearchResults);
+
+    // Perform search on groceries
+    handleSearch(groceries, setSearchResultsNotCompleted);
   };
 
   const styles = StyleSheet.create({
@@ -85,6 +171,15 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       borderWidth: 1,
       borderColor: "white",
     },
+    searchResult: {
+      backgroundColor: theme.colors.lightYellow,
+      padding: 10,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "white",
+      fontSize: 20,
+      color: theme.colors.textColor,
+    },
   });
 
   return (
@@ -100,7 +195,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       >
         <View
           style={{
-            height: 300,
+            height: 350,
             width: "90%",
             padding: 10,
             borderRadius: 20,
@@ -114,7 +209,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             label={label}
             value={addItemInput}
             ref={inputRef}
-            onChangeText={setAddItemInput}
+            onChangeText={(text) => changeInputTextAndSearchGroceries(text)}
             onSubmitEditing={handleSubmit}
             returnKeyType="send"
             submitBehavior="submit"
@@ -125,6 +220,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               backgroundColor: theme.colors.lightYellow,
               width: "90%",
               marginHorizontal: "auto",
+              marginTop: 50,
             }}
           />
 
@@ -152,7 +248,11 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           </View>
 
           <View
-            style={{ flexDirection: "row", gap: 30, marginHorizontal: "auto", marginBottom: 20 }}
+            style={{
+              flexDirection: "row",
+              gap: 30,
+              marginHorizontal: "auto",
+            }}
           >
             <Button
               mode="contained"
@@ -187,6 +287,38 @@ const DialogWindow = ({ visible, setVisible, label }) => {
               <MaterialIcons name="check-circle-outline" size={24} color={theme.colors.yellow} />
             }
           />
+          <ScrollView
+            horizontal={true}
+            contentContainerStyle={{
+              flexDirection: "row",
+              gap: 20,
+              height: 50,
+            }}
+            keyboardShouldPersistTaps="always"
+          >
+            {searchResults.length > 0 &&
+              searchResults.map((item, index) => (
+                <Text
+                  key={index}
+                  style={styles.searchResult}
+                  onPress={() => handleSubmitSearch(item)}
+                >
+                  {item.name}
+                </Text>
+              ))}
+            {searchResultsNotCompleted.length > 0 &&
+              searchResultsNotCompleted.map((item, index) => (
+                <View style={{ position: "relative" }} key={index}>
+                  <Text style={styles.searchResult}>{item.name}</Text>
+                  <MaterialCommunityIcons
+                    name="check-decagram"
+                    size={20}
+                    color={theme.colors.secondary}
+                    style={{ position: "absolute", top: 0, right: 0, zIndex: 100 }}
+                  />
+                </View>
+              ))}
+          </ScrollView>
         </View>
       </View>
     </Modal>

@@ -5,9 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import GroceryItem from "../helperComponents/GroceryItem";
 
 const CompletedGroceries = () => {
-  const { completedGroceries, setCompletedGroceries } = useAppContext();
+  const { completedGroceries } = useAppContext();
   const theme = useTheme();
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ScrollView contentContainerStyle={{ paddingBottom: 90 }}>
@@ -18,6 +17,7 @@ const CompletedGroceries = () => {
               index={index}
               theme={theme}
               screenName={"completedGroceriesScreen"}
+              items={completedGroceries}
               key={index}
             />
           ))}
