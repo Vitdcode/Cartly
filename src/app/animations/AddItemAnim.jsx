@@ -35,13 +35,13 @@ const AddItemAnim = ({ item, text, icon }) => {
       }).start();
 
       // Then fade out after 2 seconds
-      /*    setTimeout(() => {
+      setTimeout(() => {
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 200,
           useNativeDriver: true,
         }).start(() => setShow(false)); // hide after fade out
-      }, 1000); */
+      }, 1000);
     }
   }, [item]);
 

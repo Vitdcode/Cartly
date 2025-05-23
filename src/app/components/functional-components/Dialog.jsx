@@ -312,7 +312,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
                 <View style={{ position: "relative" }} key={index}>
                   <Text style={styles.searchResult}>{item.name}</Text>
                   <MaterialCommunityIcons
-                    name="check-decagram"
+                    name="check-circle"
                     size={20}
                     color={theme.colors.blue}
                     style={{ position: "absolute", top: 0, right: 0, zIndex: 100 }}
