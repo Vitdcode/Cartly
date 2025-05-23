@@ -19,15 +19,19 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
       marginHorizontal: 20,
       alignItems: "center",
       padding: 5,
+      paddingBlock: 7,
+      backgroundColor: theme.colors.onPrimary,
+      borderRadius: 16,
+      borderWidth: 1,
+      borderColor: "rgba(0, 0, 0, 0.03)",
     },
     itemDetails: {
-      borderWidth: 1,
-      borderColor: "white",
+      /*     borderWidth: 1,
+      borderColor: "white", */
       flexDirection: "row",
-      borderRadius: 15,
-      padding: 5,
+      borderRadius: 25,
       alignItems: "center",
-      backgroundColor: theme.colors.lightYellow,
+      backgroundColor: theme.colors.lightGray,
     },
     itemQuantityText: {
       color: theme.colors.textColor,
@@ -105,7 +109,7 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
       <View style={styles.itemStyle}>
         <Text
           variant="titleMedium"
-          style={{ maxWidth: "30%" }}
+          style={{ maxWidth: "30%", color: theme.colors.semiInvisibleGray, marginLeft: 5 }}
           android_hyphenationFrequency="normal"
         >
           {item.name}
@@ -120,7 +124,7 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
           <View style={{ flexDirection: "row" }}>
             <IconButton
               icon="delete-outline"
-              iconColor={theme.colors.gray}
+              iconColor={theme.colors.semiInvisibleGray}
               size={28}
               onPress={() => deleteItem(item)}
             />
@@ -128,7 +132,7 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
             <View style={styles.itemDetails}>
               <IconButton
                 icon="minus-thick"
-                iconColor={theme.colors.gray}
+                iconColor={theme.colors.semiInvisibleGray}
                 onPress={() => handleQuantityDecrease(item)}
                 size={20}
               />
@@ -136,7 +140,7 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
                 {item.quantity}
               </Text>
               <IconButton
-                iconColor={theme.colors.gray}
+                iconColor={theme.colors.semiInvisibleGray}
                 icon="plus-thick"
                 onPress={() => handleQuantityIncrease(item)}
                 size={20}
@@ -144,18 +148,15 @@ const GroceryItem = ({ item, theme, screenName, items, index }) => {
             </View>
             <IconButton
               icon={
-                screenName === "groceriesScreen"
-                  ? "checkbox-marked-circle-outline"
-                  : "arrow-left-bold-circle-outline"
+                screenName === "groceriesScreen" ? "check-circle" : "arrow-left-bold-circle-outline"
               }
-              iconColor={theme.colors.gray}
-              size={28}
+              iconColor={theme.colors.blue}
+              size={30}
               onPress={() => moveItem(item)}
             />
           </View>
         </View>
       </View>
-      {checkNextItem() && <Divider horizontalInset={true} style={{ marginTop: 10 }} />}
     </View>
   );
 };

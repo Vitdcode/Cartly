@@ -15,12 +15,12 @@ const AddItemAnim = ({ item, text, icon }) => {
       right: 10,
       flexDirection: "row",
       gap: "10",
-      backgroundColor: theme.colors.lightYellow,
+      backgroundColor: theme.colors.onPrimary,
+      borderWidth: 1,
+      borderColor: "rgba(0, 0, 0, 0.04)",
       padding: 5,
       borderRadius: 10,
       alignItems: "center",
-      borderWidth: 1,
-      borderColor: "white",
     },
   });
 
@@ -35,20 +35,20 @@ const AddItemAnim = ({ item, text, icon }) => {
       }).start();
 
       // Then fade out after 2 seconds
-      setTimeout(() => {
+      /*    setTimeout(() => {
         Animated.timing(fadeAnim, {
           toValue: 0,
           duration: 200,
           useNativeDriver: true,
         }).start(() => setShow(false)); // hide after fade out
-      }, 1000);
+      }, 1000); */
     }
   }, [item]);
 
   return (
     show && (
       <Animated.View style={[styles.fadeinOutStyle, { opacity: fadeAnim }]}>
-        <Text style={{ color: theme.colors.textColor }}>{text}</Text>
+        <Text style={{ color: theme.colors.semiInvisibleGray }}>{text}</Text>
         {icon}
       </Animated.View>
     )

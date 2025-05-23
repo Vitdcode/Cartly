@@ -151,11 +151,10 @@ const DialogWindow = ({ visible, setVisible, label }) => {
 
   const styles = StyleSheet.create({
     dialogBtn: {
-      color: "black",
       borderRadius: 10,
       padding: 2,
       borderWidth: 1,
-      borderColor: "white",
+      borderColor: "rgba(22, 22, 22, 0.05)",
       width: 100,
     },
     duplicateText: {
@@ -172,11 +171,11 @@ const DialogWindow = ({ visible, setVisible, label }) => {
       borderColor: "white",
     },
     searchResult: {
-      backgroundColor: theme.colors.lightYellow,
+      backgroundColor: theme.colors.onPrimary,
       padding: 10,
       borderRadius: 10,
       borderWidth: 1,
-      borderColor: "white",
+      borderColor: "rgba(0, 0, 0, 0.07)",
       fontSize: 20,
       color: theme.colors.textColor,
     },
@@ -200,12 +199,12 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             padding: 10,
             borderRadius: 20,
             gap: 20,
-            backgroundColor: theme.colors.dialog,
+            backgroundColor: theme.colors.background,
             justifyContent: "flex-end",
           }}
         >
           <TextInput
-            mode="flat"
+            mode="outlined"
             label={label}
             value={addItemInput}
             ref={inputRef}
@@ -216,8 +215,10 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             cursorColor={theme.colors.secondary}
             underlineColor={theme.colors.secondary}
             activeUnderlineColor={theme.colors.secondary}
+            outlineColor="rgba(0, 0, 0, 0.07)"
+            activeOutlineColor="rgba(97, 97, 97, 0.88)"
             style={{
-              backgroundColor: theme.colors.lightYellow,
+              backgroundColor: theme.colors.lightGray,
               width: "90%",
               marginHorizontal: "auto",
               marginTop: 50,
@@ -227,10 +228,12 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           <View
             style={{
               color: theme.colors.textColor,
-              backgroundColor: theme.colors.lightYellow,
+              backgroundColor: theme.colors.lightGray,
               borderRadius: 10,
               width: "85%",
               marginHorizontal: "auto",
+              borderWidth: 1,
+              borderColor: "rgba(0, 0, 0, 0.07)",
             }}
           >
             <Picker
@@ -256,8 +259,8 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           >
             <Button
               mode="contained"
-              buttonColor={theme.colors.yellow}
-              textColor="black"
+              buttonColor={theme.colors.onPrimary}
+              textColor="rgb(141, 141, 141)"
               style={styles.dialogBtn}
               onPress={() => setVisible(!visible)}
             >
@@ -265,8 +268,8 @@ const DialogWindow = ({ visible, setVisible, label }) => {
             </Button>
             <Button
               mode="contained"
-              buttonColor={theme.colors.yellow}
-              textColor="black"
+              buttonColor="rgb(92, 94, 231)"
+              textColor="rgb(236, 236, 236)"
               style={styles.dialogBtn}
               onPress={handleSubmit}
             >
@@ -277,15 +280,13 @@ const DialogWindow = ({ visible, setVisible, label }) => {
           <AddItemAnim
             item={isDuplicate}
             text={"Item already exists"}
-            icon={<MaterialIcons name="error-outline" size={24} color={theme.colors.yellow} />}
+            icon={<MaterialIcons name="error-outline" size={25} color={theme.colors.blue} />}
           />
 
           <AddItemAnim
             item={itemAdded}
             text={"Item Added"}
-            icon={
-              <MaterialIcons name="check-circle-outline" size={24} color={theme.colors.yellow} />
-            }
+            icon={<MaterialIcons name="check-circle" size={25} color={theme.colors.blue} />}
           />
           <ScrollView
             horizontal={true}
@@ -313,7 +314,7 @@ const DialogWindow = ({ visible, setVisible, label }) => {
                   <MaterialCommunityIcons
                     name="check-decagram"
                     size={20}
-                    color={theme.colors.secondary}
+                    color={theme.colors.blue}
                     style={{ position: "absolute", top: 0, right: 0, zIndex: 100 }}
                   />
                 </View>

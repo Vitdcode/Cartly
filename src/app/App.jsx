@@ -41,7 +41,9 @@ export default function RootLayout() {
   const styles = StyleSheet.create({
     header: {
       headerStyle: {
-        backgroundColor: theme.colors.lightYellow, // Background color
+        backgroundColor: theme.colors.background, // Background color
+        elevation: 0,
+        headerShadowVisible: false,
       },
       headerTintColor: theme.colors.textColor, // Text/icon color
       headerTitleStyle: {
@@ -61,6 +63,7 @@ export default function RootLayout() {
             <Stack.Navigator
               screenOptions={{
                 animation: "slide_from_right",
+                headerShadowVisible: false,
               }}
             >
               {/* using React Native navigation instead of tab navigation from expo */}
@@ -78,7 +81,7 @@ export default function RootLayout() {
 
             <StatusBar
               style={theme.dark ? "light" : "dark"} // Auto-detects from theme
-              backgroundColor={theme.colors.lightYellow} // Uses theme's secondary color
+              backgroundColor={theme.colors.background} // Uses theme's secondary color
             />
           </AppProvider>
         </NavigationContainer>

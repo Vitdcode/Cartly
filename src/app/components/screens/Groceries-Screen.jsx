@@ -61,31 +61,34 @@ const GroceriesScreen = () => {
     );
   }, [groceries]);
 
-  const styles = StyleSheet.create({
-    date: {
-      marginHorizontal: "auto",
-      padding: 4,
-      backgroundColor: theme.colors.yellow,
-      color: "black",
-      borderRadius: 10,
-    },
-  });
-
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ScrollView contentContainerStyle={{ paddingBottom: 210 }} stickyHeaderIndices={[0]}>
         <View
           style={{
             paddingVertical: 10,
-            backgroundColor: theme.colors.lightYellow,
-            borderBottomWidth: 1,
-            borderColor: "white",
+            backgroundColor: theme.colors.background,
           }}
         >
-          <Text variant="titleMedium" style={{ marginHorizontal: "auto" }}>
+          <Text
+            variant="titleMedium"
+            style={{
+              marginHorizontal: "auto",
+              color: theme.colors.semiInvisibleGray,
+              fontWeight: "bold",
+            }}
+          >
             {metricDate()}
           </Text>
-          <Text variant="titleMedium" style={{ marginHorizontal: "auto", marginTop: 10 }}>
+          <Text
+            variant="titleLarge"
+            style={{
+              marginHorizontal: "auto",
+              marginTop: 10,
+              fontWeight: "bold",
+              color: theme.colors.onSurfaceVariant,
+            }}
+          >
             Einkaufsliste
           </Text>
         </View>
@@ -93,16 +96,14 @@ const GroceriesScreen = () => {
           {Object.values(itemsPerCategory).map(({ category, items }) => (
             <View key={category}>
               <Text
-                variant="bodyLarge"
                 style={{
-                  backgroundColor: theme.colors.lightYellow,
-                  borderTopWidth: 1,
-                  borderBottomWidth: 1,
-                  borderColor: "white",
-                  textAlign: "center",
-                  color: theme.colors.textColor,
+                  letterSpacing: 1,
+                  marginLeft: 20,
+                  color: theme.colors.onSurfaceVariant,
                   padding: 4,
                   marginBottom: 10,
+                  fontSize: 18,
+                  fontWeight: "bold",
                 }}
               >
                 {category}
@@ -125,7 +126,7 @@ const GroceriesScreen = () => {
       </ScrollView>
       <Fab iconName={"plus"} />
       <Fab
-        iconName={"checkbox-marked-circle-outline"}
+        iconName={"check"}
         bottomValue={120}
         onPress={() => navigation.navigate("Completed groceries")}
       />

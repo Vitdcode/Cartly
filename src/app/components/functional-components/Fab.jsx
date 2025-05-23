@@ -20,9 +20,10 @@ const Fab = ({ iconName, bottomValue = 40, onPress }) => {
       margin: 16,
       right: 0,
       bottom: bottomValue,
-      backgroundColor: theme.colors.yellow,
-      borderWidth: 1,
-      borderColor: "white",
+      backgroundColor: theme.colors.blue,
+      /*   borderWidth: 1,
+      borderColor: "white", */
+      borderRadius: 30,
     },
   });
 
@@ -42,7 +43,7 @@ const Fab = ({ iconName, bottomValue = 40, onPress }) => {
         icon={iconName}
         style={styles.fab}
         onPress={!onPress ? handlePress : onPress}
-        color="black"
+        color={theme.colors.lightGray}
       />
       {iconName === "plus" ? (
         <DialogWindow
